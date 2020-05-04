@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bs.gsau.ssm.mapper.UserMapper">
+	
+	<!-- 登陆认证 -->
+	<select id="loginApprove" parameterType="UserVo" resultType="User">
+		select * from b_user where username=#{username} and password=#{password}
+	</select>
+	
+	<!-- 查找所有用户 -->
+	<select id="findAllUsers" resultType="BUser">
+		select * from b_user
+	</select>
+	
+	<!-- 根据用户名查找用户 -->
+	<select id="findUserByUserName" parameterType="String" resultType="BUser">
+		select * from b_user where username=#{username}
+	</select>
+	
+	<!-- 批量删除用户 -->
+	<delete id="deleteManyUser" parameterType="int[]">
+		delete 
+		from b_user
+		where id in
+		<foreach collection="array" item="arr"  index="no" open="(" separator="," close=")">
+			#{arr}
+		</foreach>
+	</delete>
+	
+	<!-- 修改密码 -->
+	<update id="editPassword" parameterType="String">
+		update b_user
+		set password=#{password}
+		where username=#{username}
+	</update>
+</mapper>

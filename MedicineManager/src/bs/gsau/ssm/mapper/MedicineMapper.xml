@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bs.gsau.ssm.mapper.MedicineMapper">
+	
+	<resultMap type="Medicine" id="medicineCategory">
+		<id column="id" property="id"/>
+		<result column="categoryid" property="categoryid"/>
+		<result column="medno" property="medno"/>
+		<result column="name" property="name"/>
+		<result column="factoryadd" property="factoryadd"/>
+		<result column="description" property="description"/>
+		<result column="price" property="price"/>
+		<result column="medcount" property="medcount"/>
+		<result column="photo" property="photo"/>
+		
+		<!-- 关联的分类表 -->
+		<association property="category" javaType="BCategory">
+			<id column="categoryid" property="id"/>
+			<result column="categoryname" property="name"/>
+		</association>
+	</resultMap>
+	
+	<!-- 查询所有药品,需关联分类 -->
+	<select id="findAllMedicine"  resultMap="medicineCategory">
+		select m.*,c.name categoryname from b_medicine m,B_CATEGORY c where m.CATEGORYID=c."ID"
+	</select>
+	
+	<!-- 修改药品信息 -->
+	<update id="updateMedicine" parameterType="BMedicine">
+		update b_medicine 
+		<set>
+      <if test="medicine.categoryid != null">
+        CATEGORYID = #{medicine.categoryid},
+      </if>
+      <if test="medicine.medno != null">
+        MEDNO = #{medicine.medno},
+      </if>
+      <if test="medicine.name != null">
+        NAME = #{medicine.name},
+      </if>
+      <if test="medicine.factoryadd != null">
+        FACTORYADD = #{medicine.factoryadd},
+      </if>
+      <if test="medicine.description != null">
+        DESCRIPTION = #{medicine.description},
+      </if>
+      <if test="medicine.price != null">
+        PRICE = #{medicine.price},
+      </if>
+      <if test="medicine.medcount != null">
+        MEDCOUNT = #{medicine.medcount},
+      </if>
+      <if test="medicine.photo != null">
+        PHOTO = #{medicine.photo},
+      </if>
+    </set>
+		where id=#{id}
+	</update>
+	
+	<!-- 根据药品编号查有无药品 -->
+	<select id="findMedicineByMedNo" parameterType="String" resultType="BMedicine">
+		select *
+		from b_medicine
+		where medno=#{medno}
+	</select>
+	
+	<!-- 批量删除药品 -->
+	<delete id="deleteManyMedicine" parameterType="int[]">
+		delete 
+		from b_medicine
+		where id in
+		<foreach collection="array" item="arr"  index="no" open="(" separator="," close=")">
+			#{arr}
+		</foreach>
+	</delete>
+	
+	<!-- 进货 -->
+	<update id="goods" parameterType="int">
+		update b_medicine
+		set medCount=#{medCount}
+		where id=#{id}
+	</update>
+	
+	<!-- 根据id修改药品数量 -->
+	<update id="remainMedicine" parameterType="int">
+		update b_medicine
+		set medcount=#{medcount}
+		where id=#{id}	
+	</update>
+	
+	<!-- 根据名称的模糊查询 -->
+	<select id="findMedicineByName" parameterType="String" resultMap="medicineCategory">
+		select m.*,c.name categoryname from b_medicine m,B_CATEGORY c where m.CATEGORYID=c."ID" and m.name like '%${value}%'
+	</select>
+</mapper>

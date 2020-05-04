@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bs.gsau.ssm.mapper.BSellMapper">
+  <resultMap id="BaseResultMap" type="bs.gsau.ssm.pojo.BSell">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="MEDID" jdbcType="DECIMAL" property="medid" />
+    <result column="SELLCOUNT" jdbcType="DECIMAL" property="sellcount" />
+    <result column="SELLPRICE" jdbcType="DECIMAL" property="sellprice" />
+    <result column="SELLALLMONEY" jdbcType="DECIMAL" property="sellallmoney" />
+    <result column="SELLTIME" jdbcType="DATE" property="selltime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, MEDID, SELLCOUNT, SELLPRICE, SELLALLMONEY, SELLTIME
+  </sql>
+  <select id="selectByExample" parameterType="bs.gsau.ssm.pojo.BSellExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from B_SELL
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from B_SELL
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from B_SELL
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="bs.gsau.ssm.pojo.BSellExample">
+    delete from B_SELL
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="bs.gsau.ssm.pojo.BSell">
+    insert into B_SELL (ID, MEDID, SELLCOUNT, 
+      SELLPRICE, SELLALLMONEY, SELLTIME
+      )
+    values (#{id,jdbcType=DECIMAL}, #{medid,jdbcType=DECIMAL}, #{sellcount,jdbcType=DECIMAL}, 
+      #{sellprice,jdbcType=DECIMAL}, #{sellallmoney,jdbcType=DECIMAL}, #{selltime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="bs.gsau.ssm.pojo.BSell">
+    <selectKey order="BEFORE" keyProperty="id" resultType="int">
+			SELECT B_SELL_ID_SEQ.NEXTVAL FROM DUAL
+	</selectKey>
+    insert into B_SELL
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="medid != null">
+        MEDID,
+      </if>
+      <if test="sellcount != null">
+        SELLCOUNT,
+      </if>
+      <if test="sellprice != null">
+        SELLPRICE,
+      </if>
+      <if test="sellallmoney != null">
+        SELLALLMONEY,
+      </if>
+      <if test="selltime != null">
+        SELLTIME,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="medid != null">
+        #{medid,jdbcType=DECIMAL},
+      </if>
+      <if test="sellcount != null">
+        #{sellcount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellprice != null">
+        #{sellprice,jdbcType=DECIMAL},
+      </if>
+      <if test="sellallmoney != null">
+        #{sellallmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="selltime != null">
+        #{selltime,jdbcType=DATE},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="bs.gsau.ssm.pojo.BSellExample" resultType="java.lang.Long">
+    select count(*) from B_SELL
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update B_SELL
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=DECIMAL},
+      </if>
+      <if test="record.medid != null">
+        MEDID = #{record.medid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sellcount != null">
+        SELLCOUNT = #{record.sellcount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sellprice != null">
+        SELLPRICE = #{record.sellprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sellallmoney != null">
+        SELLALLMONEY = #{record.sellallmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.selltime != null">
+        SELLTIME = #{record.selltime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update B_SELL
+    set ID = #{record.id,jdbcType=DECIMAL},
+      MEDID = #{record.medid,jdbcType=DECIMAL},
+      SELLCOUNT = #{record.sellcount,jdbcType=DECIMAL},
+      SELLPRICE = #{record.sellprice,jdbcType=DECIMAL},
+      SELLALLMONEY = #{record.sellallmoney,jdbcType=DECIMAL},
+      SELLTIME = #{record.selltime,jdbcType=DATE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="bs.gsau.ssm.pojo.BSell">
+    update B_SELL
+    <set>
+      <if test="medid != null">
+        MEDID = #{medid,jdbcType=DECIMAL},
+      </if>
+      <if test="sellcount != null">
+        SELLCOUNT = #{sellcount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellprice != null">
+        SELLPRICE = #{sellprice,jdbcType=DECIMAL},
+      </if>
+      <if test="sellallmoney != null">
+        SELLALLMONEY = #{sellallmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="selltime != null">
+        SELLTIME = #{selltime,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="bs.gsau.ssm.pojo.BSell">
+    update B_SELL
+    set MEDID = #{medid,jdbcType=DECIMAL},
+      SELLCOUNT = #{sellcount,jdbcType=DECIMAL},
+      SELLPRICE = #{sellprice,jdbcType=DECIMAL},
+      SELLALLMONEY = #{sellallmoney,jdbcType=DECIMAL},
+      SELLTIME = #{selltime,jdbcType=DATE}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

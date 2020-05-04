@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bs.gsau.ssm.mapper.CategoryMapper">
+	
+	
+	<!-- 查找所有类别 -->
+	<select id="findCategory" resultType="BCategory">
+		select * from b_category
+	</select>
+	
+	<!-- 根据类别名称查找用户 -->
+	<select id="findCategoryByName" parameterType="String" resultType="BCategory">
+		select * from b_category where name=#{name}
+	</select>
+	
+	<!-- 删除所选 -->
+	<delete id="deleteManyCategory" parameterType="int[]">
+		delete 
+		from b_category
+		where id in
+		<foreach collection="array" item="arr"  index="no" open="(" separator="," close=")">
+			#{arr}
+		</foreach>
+	</delete>
+</mapper>

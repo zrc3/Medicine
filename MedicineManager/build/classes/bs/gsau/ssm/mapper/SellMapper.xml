@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bs.gsau.ssm.mapper.SellMapper">
+	
+	<!-- 根据id修改卖出去的数量和总价 -->
+	<update id="sellMedicine">
+		update b_sell
+		set sellcount=#{sellCount},sellallmoney=#{sellAllMoney}
+		where medid=#{medId}
+	</update>
+	
+	<!-- 根据药品id查询该药有没有卖 -->
+	<select id="findSellByMedId" parameterType="int" resultType="BSell">
+		select * 
+		from b_sell
+		where medid=#{medId}
+	</select>
+	
+	<!-- 查看销售情况 -->
+	<select id="findAllSell" resultType="BSell">
+		select *
+		from b_sell
+	</select>
+</mapper>
